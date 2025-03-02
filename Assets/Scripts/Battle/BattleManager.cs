@@ -1,4 +1,4 @@
-﻿using Battle.Combatant;
+﻿using Battle.Combatants;
 using UnityEngine;
 
 namespace Battle

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Battle.CombatAction
+namespace Battle.CombatActions
 {
     public class TestCombatAction : ICombatAction
     {

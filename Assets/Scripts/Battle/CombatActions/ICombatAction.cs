@@ -1,4 +1,4 @@
-﻿namespace Battle.CombatAction
+﻿namespace Battle.CombatActions
 {
     public interface ICombatAction
     {

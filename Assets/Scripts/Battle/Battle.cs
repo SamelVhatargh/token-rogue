@@ -1,5 +1,5 @@
-﻿using Battle.CombatAction;
-using Battle.Combatant;
+﻿using Battle.CombatActions;
+using Battle.Combatants;
 
 namespace Battle
 {

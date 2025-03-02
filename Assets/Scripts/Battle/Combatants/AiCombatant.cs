@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
-using Battle.CombatAction;
+using Battle.CombatActions;
 using UnityEngine;
 
-namespace Battle.Combatant
+namespace Battle.Combatants
 {
     public class AiCombatant : MonoBehaviour, ICombatant
     {

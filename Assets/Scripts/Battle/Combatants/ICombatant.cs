@@ -1,7 +1,7 @@
 ﻿using System;
-using Battle.CombatAction;
+using Battle.CombatActions;
 
-namespace Battle.Combatant
+namespace Battle.Combatants
 {
     public interface ICombatant
     {
