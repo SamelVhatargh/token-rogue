@@ -12,19 +12,20 @@ namespace Battle
         [SerializeField] private Player player;
         [SerializeField] private AiCombatant ai;
         [SerializeField] private HealthDisplayController healthDisplayController;
+        [SerializeField] private BattleLogController battleLogController;
 
         private Battle _battle;
 
         private void Awake()
         {
-            player.SetStats(new Stats(8, new TokenPool(new List<Token>
+            player.SetStats(new Stats("Player", 8, new TokenPool(new List<Token>
             {
                 new(new Side(2, Symbol.Attack), new Side(1, Symbol.Defense)),
                 new(new Side(1, Symbol.Energy), new Side(1, Symbol.Defense)),
                 new(new Side(1, Symbol.Attack), new Side(0, Symbol.None)),
                 new(new Side(1, Symbol.Agility), new Side(0, Symbol.None)),
             })));
-            ai.SetStats(new Stats(5, new TokenPool(new List<Token>
+            ai.SetStats(new Stats("Monster", 5, new TokenPool(new List<Token>
             {
                 new(new Side(2, Symbol.Attack), new Side(1, Symbol.Defense)),
                 new(new Side(1, Symbol.Energy), new Side(1, Symbol.Defense)),
@@ -37,6 +38,8 @@ namespace Battle
             
             _battle = new Battle(player, ai);
             _battle.Start();
+            
+            battleLogController.SetBattle(_battle);
         }
     }
 }

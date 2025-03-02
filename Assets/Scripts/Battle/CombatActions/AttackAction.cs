@@ -17,5 +17,10 @@ namespace Battle.CombatActions
         {
             _defender.TakeDamage(_damage);
         }
+
+        public string GetLogMessage()
+        {
+            return $"{_defender.Name} receives {_damage} damage";
+        }
     }
 }

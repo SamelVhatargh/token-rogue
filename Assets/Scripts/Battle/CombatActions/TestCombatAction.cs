@@ -6,7 +6,11 @@ namespace Battle.CombatActions
     {
         public void Execute()
         {
-            Debug.Log("Test combat action performed");
+        }
+
+        public string GetLogMessage()
+        {
+            return "Test combat action performed";
         }
     }
 }

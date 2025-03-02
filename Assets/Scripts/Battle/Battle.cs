@@ -1,4 +1,5 @@
-﻿using Battle.CombatActions;
+﻿using System;
+using Battle.CombatActions;
 using Battle.Combatants;
 
 namespace Battle
@@ -10,6 +11,8 @@ namespace Battle
         private ICombatant _combatantA;
         private ICombatant _combatantB;
         private int _currentRound;
+        
+        public event Action<ICombatAction> OnCombatActionExecuted; 
 
         public Battle(ICombatant combatantA, ICombatant combatantB)
         {
@@ -49,6 +52,7 @@ namespace Battle
         {
             action.Execute();
             SetCurrentTurn(NextCombatant());
+            OnCombatActionExecuted?.Invoke(action);
         }
 
         private ICombatant NextCombatant()

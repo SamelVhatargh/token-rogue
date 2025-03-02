@@ -4,12 +4,5 @@
         <engine:Instance template="CharacterPanel" style="flex-grow: 1;" />
         <engine:Instance template="CharacterPanel" style="flex-grow: 1;" />
     </engine:VisualElement>
-    <engine:ScrollView name="ScrollView" style="max-height: 100px; position: absolute; bottom: 0; width: 100%;">
-        <engine:Label text="Log Message" enable-rich-text="true" />
-        <engine:Label text="Log Message" enable-rich-text="true" />
-        <engine:Label text="Log Message" enable-rich-text="true" />
-        <engine:Label text="Log Message" enable-rich-text="true" />
-        <engine:Label text="Log Message" enable-rich-text="true" />
-        <engine:Label text="Log Message" enable-rich-text="true" />
-    </engine:ScrollView>
+    <engine:ScrollView name="BattleLog" style="max-height: 100px; position: absolute; bottom: 0; width: 100%;" />
 </engine:UXML>
