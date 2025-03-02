@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Battle.Combatants;
 using Battle.Tokens;
+using Ui;
 using UnityEngine;
 
 namespace Battle
@@ -9,6 +10,7 @@ namespace Battle
     {
         [SerializeField] private Player player;
         [SerializeField] private AiCombatant ai;
+        [SerializeField] private BattleScreenView battleScreenView;
 
         private Battle _battle;
 
@@ -29,6 +31,9 @@ namespace Battle
                 new(new Side(1, Symbol.Agility), new Side(0, Symbol.None)),
             })));
             player.SetOpponent(ai);
+            
+            battleScreenView.SetCombatantStats(player.Stats, ai.Stats);
+            
             _battle = new Battle(player, ai);
             _battle.Start();
         }

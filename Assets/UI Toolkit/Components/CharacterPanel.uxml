@@ -6,7 +6,7 @@
                 <engine:Label text="Portait&#10;" />
             </engine:VisualElement>
             <engine:VisualElement style="flex-grow: 9;">
-                <engine:Label text="Health&#10;" />
+                <engine:Label text="Health&#10;" name="HealthLabel" />
             </engine:VisualElement>
         </engine:VisualElement>
         <engine:VisualElement name="ActionHelper" style="flex-grow: 1;">
