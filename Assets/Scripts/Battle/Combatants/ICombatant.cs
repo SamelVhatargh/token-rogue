@@ -8,7 +8,7 @@ namespace Battle.Combatants
     {
         event Action<ICombatAction> OnActionTaken;
         
-        public TokenPool Tokens { get; }
+        public Stats Stats { get; }
         
         public void DoCombatAction();
     }

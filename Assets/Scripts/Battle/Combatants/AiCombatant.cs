@@ -12,19 +12,19 @@ namespace Battle.Combatants
         [SerializeField] private TokenPoolView tokenPoolView;
 
         public event Action<ICombatAction> OnActionTaken;
-
-        public TokenPool Tokens { get; private set; }
+        public Stats Stats { get; private set; }
 
         private void Awake()
         {
-            Tokens = new TokenPool(new List<Token>
+            var tokens = new TokenPool(new List<Token>
             {
                 new(new Side(2, Symbol.Attack), new Side(1, Symbol.Defense)),
                 new(new Side(1, Symbol.Energy), new Side(1, Symbol.Defense)),
                 new(new Side(1, Symbol.Attack), new Side(0, Symbol.None)),
                 new(new Side(1, Symbol.Agility), new Side(0, Symbol.None)),
             });
-            tokenPoolView.Render(Tokens);
+            Stats = new Stats(5, tokens);
+            tokenPoolView.Render(tokens);
         }
 
         public void DoCombatAction()
