@@ -10,6 +10,9 @@ namespace Ui
         
         private Label _playerHealthLabel;
         private Label _opponentHealthLabel;
+        
+        private Stats _playerStats;
+        private Stats _opponentStats;
 
         private void Awake()
         {
@@ -19,6 +22,12 @@ namespace Ui
         
         public void SetCombatantStats(Stats playerStats, Stats opponentStats)
         {
+            _playerStats = playerStats;
+            _opponentStats = opponentStats;
+            
+            _playerStats.OnHealthChanged += () => UpdateHealthLabel(_playerHealthLabel, _playerStats);
+            _opponentStats.OnHealthChanged += () => UpdateHealthLabel(_opponentHealthLabel, _opponentStats);
+            
             UpdateHealthLabel(_playerHealthLabel, playerStats);
             UpdateHealthLabel(_opponentHealthLabel, opponentStats);
         }

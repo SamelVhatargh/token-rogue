@@ -1,4 +1,5 @@
-﻿using Battle.Tokens;
+﻿using System;
+using Battle.Tokens;
 using UnityEngine;
 
 namespace Battle.Combatants
@@ -8,6 +9,7 @@ namespace Battle.Combatants
         public int Health { get; private set; }
         public int MaxHealth { get; private set; }
         public TokenPool Tokens { get; private set; }
+        public event Action OnHealthChanged;
         
         public Stats(int health, TokenPool tokens)
         {
@@ -19,7 +21,7 @@ namespace Battle.Combatants
         public void TakeDamage(int damage)
         {
             Health -= damage;
-            Debug.Log(Health);
+            OnHealthChanged?.Invoke();
         }
     }
 }
