@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Battle.CombatActions;
 using Battle.Tokens;
 using UnityEngine;
@@ -8,10 +9,10 @@ namespace Battle.Combatants
     public class Player : MonoBehaviour, ICombatant
     {
         [SerializeField] private TokenPoolView tokenPoolView;
-        
+
         public event Action<ICombatAction> OnActionTaken;
         public Stats Stats { get; private set; }
-        
+
         private ICombatant _opponent;
         private bool _isPlayerTurn;
 
@@ -26,47 +27,30 @@ namespace Battle.Combatants
             {
                 return;
             }
+            
+            if (Stats.Tokens.IsSpent(token))
+            {
+                return;
+            }
 
             var tokenSide = token.ActiveSide;
             if (tokenSide.Symbol != Symbol.Attack)
             {
                 return;
             }
-            
-            OnActionTaken?.Invoke(new AttackAction(_opponent.Stats, tokenSide.Value));
-            _isPlayerTurn = false;
-        }
 
-        private void Update()
-        {
-            if (!_isPlayerTurn)
-            {
-                return;
-            }
-            
-            // if (Input.GetKeyDown(KeyCode.C))
-            // {
-            //     Tokens.Cast();
-            //     return;
-            // }
-            //
-            // if (!Input.GetKeyDown(KeyCode.Space))
-            // {
-            //     return;
-            // }
-            return;
-
-            var action = new TestCombatAction();
-            OnActionTaken?.Invoke(action);
+            OnActionTaken?.Invoke(
+                new AttackAction(Stats, _opponent.Stats, tokenSide.Value, new List<Token> { token })
+            );
             _isPlayerTurn = false;
         }
 
         public void SetStats(Stats stats)
         {
             Stats = stats;
-            tokenPoolView.Render(stats.Tokens);
+            tokenPoolView.SetTokens(stats.Tokens);
         }
-        
+
         public void SetOpponent(ICombatant opponent)
         {
             _opponent = opponent;

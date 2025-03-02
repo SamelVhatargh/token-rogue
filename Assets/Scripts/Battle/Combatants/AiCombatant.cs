@@ -17,7 +17,7 @@ namespace Battle.Combatants
         public void SetStats(Stats stats)
         {
             Stats = stats;
-            tokenPoolView.Render(stats.Tokens);
+            tokenPoolView.SetTokens(stats.Tokens);
         }
 
         public void DoCombatAction()
