@@ -42,6 +42,11 @@ namespace Battle.Tokens
             }
             SideChanged?.Invoke();
         }
+
+        public override string ToString()
+        {
+            return $"({_sideA.Value} {_sideA.Symbol} | {_sideB.Value} {_sideB.Symbol})";
+        }
     }
 
     public class Side

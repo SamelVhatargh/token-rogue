@@ -28,6 +28,7 @@ namespace Battle
                 new(new Side(1, Symbol.Attack), new Side(0, Symbol.None)),
                 new(new Side(1, Symbol.Agility), new Side(0, Symbol.None)),
             })));
+            player.SetOpponent(ai);
             _battle = new Battle(player, ai);
             _battle.Start();
         }

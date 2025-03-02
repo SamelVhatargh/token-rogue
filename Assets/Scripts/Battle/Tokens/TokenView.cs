@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using Utils;
 
@@ -10,6 +11,8 @@ namespace Battle.Tokens
         [SerializeField] private SpriteRenderer backValue;
       
         private Token _token;
+        
+        public event Action<Token> OnTokenClicked;
         
         public void setToken(Token token)
         {
@@ -38,7 +41,7 @@ namespace Battle.Tokens
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            Debug.Log("Token clicked");
+            OnTokenClicked?.Invoke(_token);
         }
     }
 }
