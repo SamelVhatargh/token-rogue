@@ -30,7 +30,18 @@ namespace Battle.Combatants
 
         private void Update()
         {
-            if (!_isPlayerTurn || !Input.GetKeyDown(KeyCode.Space))
+            if (!_isPlayerTurn)
+            {
+                return;
+            }
+            
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                Tokens.Cast();
+                return;
+            }
+
+            if (!Input.GetKeyDown(KeyCode.Space))
             {
                 return;
             }

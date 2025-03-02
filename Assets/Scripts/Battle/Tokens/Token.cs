@@ -1,4 +1,5 @@
-﻿using Random = UnityEngine.Random;
+﻿using System;
+using Random = UnityEngine.Random;
 
 namespace Battle.Tokens
 {
@@ -9,6 +10,8 @@ namespace Battle.Tokens
         
         public Side ActiveSide { get; private set; }
         public Side InactiveSide { get; private set; }
+        
+        public event Action SideChanged;
 
         public Token(Side sideA, Side sideB)
         {
@@ -22,11 +25,12 @@ namespace Battle.Tokens
         {
             ActiveSide = InactiveSide;
             InactiveSide = ActiveSide;
+            SideChanged?.Invoke();
         }
         
         public void Cast()
         {
-            if (Random.Range(0, 1) == 0)
+            if (Random.Range(0, 2) == 0)
             {
                 ActiveSide = _sideA;
                 InactiveSide = _sideB;
@@ -36,6 +40,7 @@ namespace Battle.Tokens
                 ActiveSide = _sideB;
                 InactiveSide = _sideA;
             }
+            SideChanged?.Invoke();
         }
     }
 
