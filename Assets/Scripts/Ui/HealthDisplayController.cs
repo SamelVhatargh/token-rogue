@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 namespace Ui
 {
-    public class BattleScreenView : MonoBehaviour
+    public class HealthDisplayController : MonoBehaviour
     {
         [SerializeField] private UIDocument document;
         

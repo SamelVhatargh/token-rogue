@@ -150,7 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1382874820}
   ai: {fileID: 1927508104}
-  battleScreenView: {fileID: 400389970}
+  healthDisplayController: {fileID: 400389970}
 --- !u!4 &77917053
 Transform:
   m_ObjectHideFlags: 0

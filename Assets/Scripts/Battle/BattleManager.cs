@@ -3,6 +3,7 @@ using Battle.Combatants;
 using Battle.Tokens;
 using Ui;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Battle
 {
@@ -10,7 +11,7 @@ namespace Battle
     {
         [SerializeField] private Player player;
         [SerializeField] private AiCombatant ai;
-        [SerializeField] private BattleScreenView battleScreenView;
+        [SerializeField] private HealthDisplayController healthDisplayController;
 
         private Battle _battle;
 
@@ -32,7 +33,7 @@ namespace Battle
             })));
             player.SetOpponent(ai);
             
-            battleScreenView.SetCombatantStats(player.Stats, ai.Stats);
+            healthDisplayController.SetCombatantStats(player.Stats, ai.Stats);
             
             _battle = new Battle(player, ai);
             _battle.Start();
