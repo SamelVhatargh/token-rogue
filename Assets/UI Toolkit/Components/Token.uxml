@@ -1,0 +1,7 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:VisualElement name="Token" style="flex-grow: 0; background-image: url(&quot;project://database/Packages/com.unity.2d.sprite/Editor/ObjectMenuCreation/DefaultAssets/Textures/Circle.png?fileID=-2413806693520163455&amp;guid=ebe73ca9363db456bacf42c025bb4847&amp;type=3#Circle&quot;); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; width: 64px; height: 64px; flex-direction: row;">
+        <engine:Label text="2" parse-escape-sequences="true" style="flex-shrink: 0; -unity-text-align: middle-center; font-size: 24px; position: absolute; top: 8px; left: 2px;" />
+        <engine:VisualElement style="flex-grow: 1; background-image: resource(&apos;Sprites/Tokens/Attack&apos;); position: absolute; height: 32px; width: 32px; top: 14px; left: 14px;" />
+        <engine:VisualElement style="flex-grow: 1; background-image: resource(&apos;Sprites/Tokens/Defense&apos;); position: absolute; height: 16px; width: 16px; top: 24px; left: 44px;" />
+    </engine:VisualElement>
+</engine:UXML>

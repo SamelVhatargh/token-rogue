@@ -1,0 +1,42 @@
+.status {
+    background-color: aqua;
+    flex-grow: 1;
+}
+
+.status-portrait {
+    background-color: blue;
+    flex-grow: 1;
+}
+
+.status-health {
+    background-color: red;
+    flex-grow: 2;
+}
+
+.status-portrait {
+    background-color: blue;
+}
+
+.health-pip {
+    background-color: red;
+    border-width: 2px;
+    border-color: darkred;
+    height: 50px;
+    width: 50px;
+}
+
+.health-pip_empty {
+    background-color: transparent;
+}
+
+.health-bar {
+    flex-grow: 1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+}
+
+.status {
+    background-color: aqua;
+    flex-grow: 1;
+}
