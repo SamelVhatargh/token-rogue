@@ -37,9 +37,8 @@ namespace Battle
             healthDisplayController.SetCombatantStats(player.Stats, ai.Stats);
             
             _battle = new Battle(player, ai);
-            _battle.Start();
-            
             battleLogController.SetBattle(_battle);
+            _battle.Start();
         }
     }
 }

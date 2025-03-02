@@ -12,7 +12,8 @@ namespace Battle
         private ICombatant _combatantB;
         private int _currentRound;
         
-        public event Action<ICombatAction> OnCombatActionExecuted; 
+        public event Action<ICombatAction> OnCombatActionExecuted;
+        public event Action<int> OnRoundStarted;
 
         public Battle(ICombatant combatantA, ICombatant combatantB)
         {
@@ -33,6 +34,7 @@ namespace Battle
             _combatantB.Stats.Tokens.Cast();
             CurrentCombatant = null;
             SetCurrentTurn(_combatantA);
+            OnRoundStarted?.Invoke(_currentRound);
         }
 
         private void SetCurrentTurn(ICombatant combatant)
