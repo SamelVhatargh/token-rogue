@@ -33,6 +33,7 @@ namespace Battle
                 new(new Side(1, Symbol.Agility), new Side(0, Symbol.None)),
             })));
             player.SetOpponent(ai);
+            ai.SetOpponent(player);
             
             healthDisplayController.SetCombatantStats(player.Stats, ai.Stats);
             

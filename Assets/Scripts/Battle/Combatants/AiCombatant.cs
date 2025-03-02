@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Battle.CombatActions;
 using Battle.Tokens;
 using UnityEngine;
@@ -10,6 +11,8 @@ namespace Battle.Combatants
     public class AiCombatant : MonoBehaviour, ICombatant
     {
         [SerializeField] private TokenPoolView tokenPoolView;
+
+        private ICombatant _opponent;
 
         public event Action<ICombatAction> OnActionTaken;
         public Stats Stats { get; private set; }
@@ -28,7 +31,33 @@ namespace Battle.Combatants
         private IEnumerator DelayedAction()
         {
             yield return new WaitForSeconds(1f);
-            OnActionTaken?.Invoke(new TestCombatAction());
+
+
+            var attackTokens = Stats.Tokens.CombatPool
+                .Where(token => token.ActiveSide.Symbol == Symbol.Attack)
+                .OrderByDescending(token => token.ActiveSide.Value)
+                .ToList();
+
+            if (attackTokens.Count == 0)
+            {
+                Debug.Log("Skip action");
+            }
+            else
+            {
+                var token = attackTokens.First();
+                var attackAction = new AttackAction(
+                    Stats,
+                    _opponent.Stats,
+                    token.ActiveSide.Value,
+                    new List<Token> { token }
+                );
+                OnActionTaken?.Invoke(attackAction);
+            }
+        }
+
+        public void SetOpponent(ICombatant opponent)
+        {
+            _opponent = opponent;
         }
 
         public override string ToString()
