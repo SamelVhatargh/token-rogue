@@ -14,17 +14,10 @@ namespace Battle.Combatants
         public event Action<ICombatAction> OnActionTaken;
         public Stats Stats { get; private set; }
 
-        private void Awake()
+        public void SetStats(Stats stats)
         {
-            var tokens = new TokenPool(new List<Token>
-            {
-                new(new Side(2, Symbol.Attack), new Side(1, Symbol.Defense)),
-                new(new Side(1, Symbol.Energy), new Side(1, Symbol.Defense)),
-                new(new Side(1, Symbol.Attack), new Side(0, Symbol.None)),
-                new(new Side(1, Symbol.Agility), new Side(0, Symbol.None)),
-            });
-            Stats = new Stats(5, tokens);
-            tokenPoolView.Render(tokens);
+            Stats = stats;
+            tokenPoolView.Render(stats.Tokens);
         }
 
         public void DoCombatAction()

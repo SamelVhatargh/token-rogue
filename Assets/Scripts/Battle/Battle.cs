@@ -26,6 +26,8 @@ namespace Battle
         private void StartNextRound()
         {
             _currentRound++;
+            _combatantA.Stats.Tokens.Cast();
+            _combatantB.Stats.Tokens.Cast();
             CurrentCombatant = null;
             SetCurrentTurn(_combatantA);
         }

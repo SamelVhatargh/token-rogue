@@ -13,22 +13,8 @@ namespace Battle.Combatants
         public event Action<ICombatAction> OnActionTaken;
         public Stats Stats { get; private set; }
 
-        private void Awake()
-        {
-            var tokens = new TokenPool(new List<Token>
-            {
-                new(new Side(2, Symbol.Attack), new Side(1, Symbol.Defense)),
-                new(new Side(1, Symbol.Energy), new Side(1, Symbol.Defense)),
-                new(new Side(1, Symbol.Attack), new Side(0, Symbol.None)),
-                new(new Side(1, Symbol.Agility), new Side(0, Symbol.None)),
-            });
-            Stats = new Stats(8, tokens);
-            tokenPoolView.Render(tokens);
-        }
-
         private bool _isPlayerTurn;
-
-
+        
         private void Update()
         {
             if (!_isPlayerTurn)
@@ -51,6 +37,12 @@ namespace Battle.Combatants
             var action = new TestCombatAction();
             OnActionTaken?.Invoke(action);
             _isPlayerTurn = false;
+        }
+
+        public void SetStats(Stats stats)
+        {
+            Stats = stats;
+            tokenPoolView.Render(stats.Tokens);
         }
 
         public void DoCombatAction()
