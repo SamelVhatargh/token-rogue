@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using Utils;
 
 namespace Battle.Tokens
 {
-    public class TokenView : MonoBehaviour
+    public class TokenView : MonoBehaviour, IPointerDownHandler
     {
         [SerializeField] private SpriteRenderer faceValue;
         [SerializeField] private SpriteRenderer backValue;
@@ -33,6 +34,11 @@ namespace Battle.Tokens
             {
                 _token.SideChanged -= UpdateSprites;
             }
+        }
+
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            Debug.Log("Token clicked");
         }
     }
 }

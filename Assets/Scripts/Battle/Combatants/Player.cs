@@ -35,16 +35,17 @@ namespace Battle.Combatants
                 return;
             }
             
-            if (Input.GetKeyDown(KeyCode.C))
-            {
-                Tokens.Cast();
-                return;
-            }
-
-            if (!Input.GetKeyDown(KeyCode.Space))
-            {
-                return;
-            }
+            // if (Input.GetKeyDown(KeyCode.C))
+            // {
+            //     Tokens.Cast();
+            //     return;
+            // }
+            //
+            // if (!Input.GetKeyDown(KeyCode.Space))
+            // {
+            //     return;
+            // }
+            return;
 
             var action = new TestCombatAction();
             OnActionTaken?.Invoke(action);

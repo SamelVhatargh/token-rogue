@@ -9,6 +9,8 @@ namespace Battle.Combatants
 {
     public class AiCombatant : MonoBehaviour, ICombatant
     {
+        [SerializeField] private TokenPoolView tokenPoolView;
+
         public event Action<ICombatAction> OnActionTaken;
 
         public TokenPool Tokens { get; private set; }
@@ -22,6 +24,7 @@ namespace Battle.Combatants
                 new(new Side(1, Symbol.Attack), new Side(0, Symbol.None)),
                 new(new Side(1, Symbol.Agility), new Side(0, Symbol.None)),
             });
+            tokenPoolView.Render(Tokens);
         }
 
         public void DoCombatAction()
