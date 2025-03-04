@@ -7,6 +7,9 @@ namespace Battle.Tokens
 {
     public class TokenView : MonoBehaviour, IPointerDownHandler
     {
+        private static readonly Color InitiativeColor = new(1, 0.3f, 0);
+        private static readonly Color DefaultColor = Color.black;
+        
         [SerializeField] private SpriteRenderer faceValue;
         [SerializeField] private SpriteRenderer backValue;
       
@@ -27,8 +30,14 @@ namespace Battle.Tokens
 
         private void UpdateSprites()
         {
-            faceValue.sprite = ResourceCache.LoadTokenSprite(_token.ActiveSide.Symbol);
-            backValue.sprite = ResourceCache.LoadTokenSprite(_token.InactiveSide.Symbol);
+            UpdateSide(faceValue, _token.ActiveSide);
+            UpdateSide(backValue, _token.InactiveSide);
+        }
+
+        private static void UpdateSide(SpriteRenderer spriteRenderer, Side side)
+        {
+            spriteRenderer.sprite = ResourceCache.LoadTokenSprite(side.Symbol);
+            spriteRenderer.color = side.HasInitiative ? InitiativeColor : DefaultColor;
         }
 
         private void OnDisable()

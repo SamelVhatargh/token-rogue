@@ -19,7 +19,8 @@ namespace Ui
         {
             _battle = battle;
             _battle.OnCombatActionExecuted += action => AddLogMessage(action.GetLogMessage());
-            _battle.OnRoundStarted += round => AddLogMessage($"Round {round} started");
+            _battle.OnRoundStarted += (round, combatant)
+                => AddLogMessage($"Round {round} started. {combatant} won the initiative.");
         }
 
         private void AddLogMessage(string getLogMessage)

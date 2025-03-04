@@ -46,6 +46,11 @@ namespace Battle.Tokens
             return SpentPool.Contains(token);
         }
         
+        public int GetInitiative()
+        {
+            return CombatPool.Count(token => token.ActiveSide.HasInitiative);
+        }
+        
         public string PrintActiveTokenCombatPool()
         {
             return string.Join(", ", CombatPool.Select(token => token.ActiveSide));

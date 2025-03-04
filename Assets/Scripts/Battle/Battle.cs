@@ -8,7 +8,7 @@ namespace Battle
     public class Battle
     {
         public event Action<ICombatAction> OnCombatActionExecuted;
-        public event Action<int> OnRoundStarted;
+        public event Action<int, ICombatant> OnRoundStarted;
 
         private readonly ICombatant _combatantA;
         private readonly ICombatant _combatantB;
@@ -29,12 +29,18 @@ namespace Battle
 
         private void StartNextRound()
         {
-            _turnOrder = new TurnOrder(new List<ICombatant> { _combatantA, _combatantB });
             _currentRound++;
-            OnRoundStarted?.Invoke(_currentRound);
 
             _combatantA.Stats.Tokens.Cast();
             _combatantB.Stats.Tokens.Cast();
+
+            var combatants = new List<ICombatant> { _combatantA, _combatantB };
+            combatants.Sort((a, b) =>
+                b.Stats.Tokens.GetInitiative().CompareTo(a.Stats.Tokens.GetInitiative())
+            );
+            _turnOrder = new TurnOrder(combatants);
+            
+            OnRoundStarted?.Invoke(_currentRound, combatants[0]);
             ProcessTurn();
         }
 

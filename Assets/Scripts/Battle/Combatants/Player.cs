@@ -80,7 +80,7 @@ namespace Battle.Combatants
 
         public override string ToString()
         {
-            return "Player";
+            return Stats.Name;
         }
     }
 }

@@ -62,7 +62,7 @@ namespace Battle.Combatants
 
         public override string ToString()
         {
-            return "AiCombatant";
+            return Stats.Name;
         }
     }
 }

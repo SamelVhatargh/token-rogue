@@ -33,7 +33,7 @@ namespace Battle
                 new(new Side(2, Symbol.Attack), new Side(1, Symbol.Defense)),
                 new(new Side(1, Symbol.Energy), new Side(1, Symbol.Defense)),
                 new(new Side(1, Symbol.Attack), new Side(0, Symbol.None)),
-                new(new Side(1, Symbol.Agility), new Side(0, Symbol.None)),
+                new(new Side(1, Symbol.Agility, true), new Side(0, Symbol.None)),
             })));
             player.SetOpponent(ai);
             ai.SetOpponent(player);

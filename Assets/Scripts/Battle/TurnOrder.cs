@@ -7,9 +7,11 @@ namespace Battle
     {
         private readonly List<ICombatant> _combatants;
         private int _currentCombatantIndex;
+        private bool _isFirstTurn;
 
         public TurnOrder(List<ICombatant> combatants)
         {
+            _isFirstTurn = true;
             _currentCombatantIndex = 0;
             _combatants = combatants;
         }
@@ -28,7 +30,8 @@ namespace Battle
 
         public ICombatant Advance()
         {
-            _currentCombatantIndex = GetNextCombatantIndex();
+            _currentCombatantIndex = _isFirstTurn ? 0 : GetNextCombatantIndex();
+            _isFirstTurn = false;
             return _combatants[_currentCombatantIndex];
         }
         

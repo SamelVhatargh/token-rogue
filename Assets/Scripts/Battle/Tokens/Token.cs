@@ -5,8 +5,8 @@ namespace Battle.Tokens
 {
     public class Token
     {
-        private Side _sideA;
-        private Side _sideB;
+        private readonly Side _sideA;
+        private readonly Side _sideB;
         
         public Side ActiveSide { get; private set; }
         public Side InactiveSide { get; private set; }
@@ -53,16 +53,18 @@ namespace Battle.Tokens
     {
         public int Value { get; }
         public Symbol Symbol { get; }
+        public bool HasInitiative { get; }
 
-        public Side(int value, Symbol symbol)
+        public Side(int value, Symbol symbol, bool initiative = false)
         {
             Value = value;
             Symbol = symbol;
+            HasInitiative = initiative;
         }
 
         public override string ToString()
         {
-            return $"{Value} {Symbol}";
+            return $"{Value} {Symbol}{(HasInitiative ? "*" : "")}";
         }
     }
 
