@@ -27,6 +27,7 @@ namespace Battle.Combatants.PlayerActionManagers
             _tokenSelection.OnSelectionChanged += TokenSelection_OnSelectionChanged; 
 
             actionHelper.EnableConfirmButton();
+            actionHelper.EnableCancelButton();
             actionHelper.OnConfirmClicked += ActionHelper_OnConfirmClicked;
         }
 

@@ -9,8 +9,12 @@
                 <engine:Label text="Health&#10;" name="HealthLabel" />
             </engine:VisualElement>
         </engine:VisualElement>
-        <engine:VisualElement name="ActionHelper" style="flex-grow: 1;">
-            <engine:Label text="Helper Text And Actions" emoji-fallback-support="false" selectable="true" />
+        <engine:VisualElement name="ActionHelper" style="flex-grow: 1; flex-direction: row; align-self: auto; align-items: flex-start;">
+            <engine:VisualElement style="flex-grow: 1;">
+                <engine:Label emoji-fallback-support="false" selectable="true" parse-escape-sequences="true" name="ActionHelperMessage" style="white-space: normal;" />
+            </engine:VisualElement>
+            <engine:Button text="Confirm" name="ConfirmButton" />
+            <engine:Button text="Cancel" emoji-fallback-support="false" name="CancelButton" />
         </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>
