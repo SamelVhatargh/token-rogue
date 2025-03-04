@@ -40,7 +40,7 @@ namespace Battle.Tokens
         private static void UpdateSide(SpriteRenderer symbolSpriteRenderer, TextMeshPro text, Side side)
         {
             var color = side.HasInitiative ? InitiativeColor : DefaultColor;
-            var symbol = side.Value == 0 ? Symbol.None : side.Symbol;
+            var symbol = side.Value == 0 ? Symbol.Empty : side.Symbol;
             var textValue = side.Value > 1 ? side.Value.ToString() : "";
         
             symbolSpriteRenderer.sprite = ResourceCache.LoadTokenSprite(symbol);

@@ -70,7 +70,7 @@ namespace Battle.Tokens
 
     public enum Symbol
     {
-        None,
+        Empty,
         Attack,
         Defense,
         Energy,
