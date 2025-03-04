@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Battle.CombatActions;
 using Battle.Combatants;
 
@@ -6,14 +7,13 @@ namespace Battle
 {
     public class Battle
     {
-        public ICombatant CurrentCombatant { get; private set; }
-
-        private ICombatant _combatantA;
-        private ICombatant _combatantB;
-        private int _currentRound;
-        
         public event Action<ICombatAction> OnCombatActionExecuted;
         public event Action<int> OnRoundStarted;
+
+        private readonly ICombatant _combatantA;
+        private readonly ICombatant _combatantB;
+        private int _currentRound;
+        private TurnOrder _turnOrder;
 
         public Battle(ICombatant combatantA, ICombatant combatantB)
         {
@@ -29,37 +29,42 @@ namespace Battle
 
         private void StartNextRound()
         {
+            _turnOrder = new TurnOrder(new List<ICombatant> { _combatantA, _combatantB });
             _currentRound++;
+            OnRoundStarted?.Invoke(_currentRound);
+
             _combatantA.Stats.Tokens.Cast();
             _combatantB.Stats.Tokens.Cast();
-            CurrentCombatant = null;
-            SetCurrentTurn(_combatantA);
-            OnRoundStarted?.Invoke(_currentRound);
+            ProcessTurn();
         }
 
-        private void SetCurrentTurn(ICombatant combatant)
+        private void ProcessTurn()
         {
-            var previousCombatant = CurrentCombatant;
-            if (previousCombatant != null)
+            if (_turnOrder.isEmpty())
             {
-                previousCombatant.OnActionTaken -= ExecuteAction;
+                StartNextRound();
+                return;
             }
 
-            CurrentCombatant = combatant;
-            CurrentCombatant.OnActionTaken += ExecuteAction;
-            CurrentCombatant.DoCombatAction();
+            var combatant = _turnOrder.Advance();
+            combatant.OnActionTaken += ExecuteAction;
+
+            combatant.DoCombatAction();
         }
 
         private void ExecuteAction(ICombatAction action)
         {
-            action.Execute();
-            SetCurrentTurn(NextCombatant());
-            OnCombatActionExecuted?.Invoke(action);
-        }
+            _turnOrder.Current().OnActionTaken -= ExecuteAction;
 
-        private ICombatant NextCombatant()
-        {
-            return CurrentCombatant == _combatantA ? _combatantB : _combatantA;
+            if (action is SkipAction)
+            {
+                _turnOrder.RemoveCurrentCombatant();
+            }
+
+            action.Execute();
+            OnCombatActionExecuted?.Invoke(action);
+
+            ProcessTurn();
         }
     }
 }

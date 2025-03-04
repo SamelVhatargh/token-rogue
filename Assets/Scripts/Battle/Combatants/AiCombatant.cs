@@ -40,7 +40,7 @@ namespace Battle.Combatants
 
             if (attackTokens.Count == 0)
             {
-                Debug.Log("Skip action");
+                OnActionTaken?.Invoke(new SkipAction(Stats.Name));
             }
             else
             {

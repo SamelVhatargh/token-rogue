@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Battle.CombatActions;
 using Battle.Tokens;
 using UnityEngine;
@@ -21,6 +22,22 @@ namespace Battle.Combatants
             tokenPoolView.OnTokenClicked += TokenPoolView_OnTokenClicked;
         }
 
+        private void Update()
+        {
+            if (!_isPlayerTurn)
+            {
+                return;
+            }
+
+            if (Stats.Tokens.CombatPool.Count(token => token.ActiveSide.Symbol == Symbol.Attack) != 0)
+            {
+                return;
+            }
+
+            _isPlayerTurn = false;
+            OnActionTaken?.Invoke(new SkipAction(Stats.Name));
+        }
+
         private void TokenPoolView_OnTokenClicked(Token token)
         {
             if (!_isPlayerTurn)
@@ -39,10 +56,10 @@ namespace Battle.Combatants
                 return;
             }
 
+            _isPlayerTurn = false;
             OnActionTaken?.Invoke(
                 new AttackAction(Stats, _opponent.Stats, tokenSide.Value, new List<Token> { token })
             );
-            _isPlayerTurn = false;
         }
 
         public void SetStats(Stats stats)

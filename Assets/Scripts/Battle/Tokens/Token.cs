@@ -45,7 +45,7 @@ namespace Battle.Tokens
 
         public override string ToString()
         {
-            return $"({_sideA.Value} {_sideA.Symbol} | {_sideB.Value} {_sideB.Symbol})";
+            return $"({_sideA} | {_sideB})";
         }
     }
 
@@ -58,6 +58,11 @@ namespace Battle.Tokens
         {
             Value = value;
             Symbol = symbol;
+        }
+
+        public override string ToString()
+        {
+            return $"{Value} {Symbol}";
         }
     }
 

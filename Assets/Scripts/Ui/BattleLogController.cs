@@ -26,6 +26,7 @@ namespace Ui
         {
             var logEntry = new Label(getLogMessage);
             _battleLog.contentContainer.Add(logEntry);
+            Debug.Log(getLogMessage);
         }
     }
 }

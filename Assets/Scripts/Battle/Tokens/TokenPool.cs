@@ -6,7 +6,7 @@ namespace Battle.Tokens
 {
     public class TokenPool
     {
-        public List<Token> All { get; private set; }
+        private List<Token> All => CombatPool.Concat(SpentPool).ToList();
         public List<Token> CombatPool { get; private set; }
         public List<Token> SpentPool { get; private set; }
 
@@ -15,13 +15,17 @@ namespace Battle.Tokens
         
         public TokenPool(List<Token> tokens)
         {
-            All = tokens;
             CombatPool = tokens;
             SpentPool = new List<Token>();
         }
 
         public void Cast()
         {
+            CombatPool.AddRange(SpentPool);
+            SpentPool.Clear();
+        
+            OnCombatPoolUpdated?.Invoke();
+            OnSpentPoolUpdated?.Invoke();
             All.ForEach(token => token.Cast());
         }
 
@@ -40,6 +44,11 @@ namespace Battle.Tokens
         public bool IsSpent(Token token)
         {
             return SpentPool.Contains(token);
+        }
+        
+        public string PrintActiveTokenCombatPool()
+        {
+            return string.Join(", ", CombatPool.Select(token => token.ActiveSide));
         }
     }
 }

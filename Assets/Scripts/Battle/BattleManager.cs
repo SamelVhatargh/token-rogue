@@ -20,6 +20,9 @@ namespace Battle
         {
             player.SetStats(new Stats("Player", 8, new TokenPool(new List<Token>
             {
+                // new(new Side(1, Symbol.Attack), new Side(1, Symbol.Attack)),
+                // new(new Side(1, Symbol.Attack), new Side(1, Symbol.Attack)),
+
                 new(new Side(2, Symbol.Attack), new Side(1, Symbol.Defense)),
                 new(new Side(1, Symbol.Energy), new Side(1, Symbol.Defense)),
                 new(new Side(1, Symbol.Attack), new Side(0, Symbol.None)),
