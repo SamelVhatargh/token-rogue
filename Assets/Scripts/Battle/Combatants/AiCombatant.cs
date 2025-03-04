@@ -16,6 +16,7 @@ namespace Battle.Combatants
 
         public event Action<ICombatAction> OnActionTaken;
         public Stats Stats { get; private set; }
+        public CombatantType Type => CombatantType.Enemy;
 
         public void SetStats(Stats stats)
         {

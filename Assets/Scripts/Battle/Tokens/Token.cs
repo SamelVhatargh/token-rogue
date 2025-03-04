@@ -68,12 +68,15 @@ namespace Battle.Tokens
         }
     }
 
+    [Flags]
     public enum Symbol
     {
-        Empty,
-        Attack,
-        Defense,
-        Energy,
-        Agility,
+        None = 0,
+        Empty = 1 << 0,
+        Attack = 1 << 1,
+        Defense = 1 << 2,
+        Energy = 1 << 3,
+        Agility = 1 << 4,
+        Everything = Empty | Attack | Defense | Energy | Agility,
     }
 }

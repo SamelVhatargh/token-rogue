@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Battle.CombatActions;
+using Battle.Combatants.PlayerActionManagers;
 using Battle.Tokens;
+using Battle.Tokens.Selections;
+using JetBrains.Annotations;
+using Ui;
 using UnityEngine;
 
 namespace Battle.Combatants
@@ -10,16 +14,33 @@ namespace Battle.Combatants
     public class Player : MonoBehaviour, ICombatant
     {
         [SerializeField] private TokenPoolView tokenPoolView;
+        [SerializeField] private SelectionManager selectionManager;
+        [SerializeField] private ActionHelperController actionHelper;
+
+        [SerializeField] private AttackActionManager attackActionManager;
 
         public event Action<ICombatAction> OnActionTaken;
         public Stats Stats { get; private set; }
+        public CombatantType Type => CombatantType.Player;
 
         private ICombatant _opponent;
         private bool _isPlayerTurn;
+        
+        private Selection _playerSelection;
+        private Selection _enemySelection;
+
+        private IActionManager _currentActionManager;
 
         private void OnEnable()
         {
-            tokenPoolView.OnTokenClicked += TokenPoolView_OnTokenClicked;
+            // tokenPoolView.OnTokenClicked += TokenPoolView_OnTokenClicked;
+            selectionManager.OnTokenToggled += SelectionManager_OnTokenToggled;
+            actionHelper.OnCancelClicked += ActionHelper_OnCancelClicked;
+        }
+
+        private void ActionHelper_OnCancelClicked()
+        {
+            ResetActionManager();
         }
 
         private void Update()
@@ -36,6 +57,47 @@ namespace Battle.Combatants
 
             _isPlayerTurn = false;
             OnActionTaken?.Invoke(new SkipAction(Stats.Name));
+        }
+
+        private void SelectionManager_OnTokenToggled(Token token)
+        {
+            if (_currentActionManager == null)
+            {
+                switch (token.ActiveSide.Symbol)
+                {
+                    case Symbol.Attack:
+                        _currentActionManager = attackActionManager;
+                        SetCombatActionSelection();
+                        _playerSelection.ToggleToken(token);
+                        _currentActionManager.Init(_playerSelection, Stats, _opponent.Stats);
+                        break;
+                    case Symbol.None:
+                    case Symbol.Empty:
+                    case Symbol.Defense:
+                    case Symbol.Energy:
+                    case Symbol.Agility:
+                    case Symbol.Everything:
+                    default:
+                        Debug.LogWarning($"Action manager for {token.ActiveSide.Symbol} not implemented yet.");
+                        break;
+                }
+                if (_currentActionManager != null)
+                {
+                    _currentActionManager.OnActionReady += CurrentActionManager_OnActionReady;
+                }
+            }
+
+            if (_currentActionManager != null && _playerSelection.IsEmpty() && _enemySelection.IsEmpty())
+            {
+                ResetActionManager();
+            }
+        }
+
+        private void CurrentActionManager_OnActionReady(ICombatAction action)
+        {
+            ResetActionManager();
+            _isPlayerTurn = false;
+            OnActionTaken?.Invoke(action);
         }
 
         private void TokenPoolView_OnTokenClicked(Token token)
@@ -76,6 +138,39 @@ namespace Battle.Combatants
         public void DoCombatAction()
         {
             _isPlayerTurn = true;
+        }
+        
+        public void SetDefaultSelection()
+        {
+            _playerSelection = new Selection(Symbol.Everything);
+            _enemySelection = new Selection(Symbol.None);
+            UpdateSelectionManager();
+        }
+        
+        private void SetCombatActionSelection()
+        {
+            _playerSelection = new Selection(Symbol.Attack);
+            _enemySelection = new Selection(Symbol.None);
+            UpdateSelectionManager();
+        }
+
+        public void ResetActionManager()
+        {
+            if (_currentActionManager != null)
+            {
+                _currentActionManager.Clear();
+                _currentActionManager.OnActionReady -= CurrentActionManager_OnActionReady;
+            }
+            _currentActionManager = null;
+            SetDefaultSelection();
+            actionHelper.SetMessage("Select tokens to act.");
+            actionHelper.DisableCancelButton();
+            actionHelper.DisableConfirmButton();
+        }
+
+        private void UpdateSelectionManager()
+        {
+            selectionManager.SetSelections(_playerSelection, _enemySelection);
         }
 
         public override string ToString()

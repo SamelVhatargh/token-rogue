@@ -11,5 +11,13 @@ namespace Battle.Combatants
         public Stats Stats { get; }
         
         public void DoCombatAction();
+        
+        public CombatantType Type { get; }
+    }
+
+    public enum CombatantType
+    {
+        Player,
+        Enemy,
     }
 }

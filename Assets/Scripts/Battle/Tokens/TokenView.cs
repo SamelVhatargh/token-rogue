@@ -15,12 +15,13 @@ namespace Battle.Tokens
         [SerializeField] private SpriteRenderer faceSymbol;
         [SerializeField] private TextMeshPro backValue;
         [SerializeField] private SpriteRenderer backSymbol;
+        [SerializeField] private SpriteRenderer outline;
 
         private Token _token;
         
         public event Action<Token> OnTokenClicked;
         
-        public void setToken(Token token)
+        public void SetToken(Token token)
         {
             if (_token != null)
             {
@@ -30,6 +31,30 @@ namespace Battle.Tokens
             UpdateSprites();
             _token.SideChanged += UpdateSprites;
         }
+        
+        public void SetState(TokenVisualState state)
+        {
+            switch (state)
+            {
+                case TokenVisualState.Normal:
+                    outline.enabled = false;
+                    break;
+                case TokenVisualState.Selectable:
+                    outline.enabled = true;
+                    outline.color = Color.yellow;
+                    break;
+                case TokenVisualState.NonSelectable:
+                    outline.enabled = true;
+                    outline.color = Color.red;
+                    break;
+                case TokenVisualState.Selected:
+                    outline.enabled = true;
+                    outline.color = Color.green;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(state), state, null);
+            }
+        }
 
         private void UpdateSprites()
         {
@@ -37,6 +62,7 @@ namespace Battle.Tokens
             UpdateSide(backSymbol, backValue, _token.InactiveSide);
         }
 
+        // ReSharper disable Unity.PerformanceAnalysis
         private static void UpdateSide(SpriteRenderer symbolSpriteRenderer, TextMeshPro text, Side side)
         {
             var color = side.HasInitiative ? InitiativeColor : DefaultColor;

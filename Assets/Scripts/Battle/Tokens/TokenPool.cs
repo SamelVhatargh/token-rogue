@@ -6,7 +6,7 @@ namespace Battle.Tokens
 {
     public class TokenPool
     {
-        private List<Token> All => CombatPool.Concat(SpentPool).ToList();
+        public List<Token> All => CombatPool.Concat(SpentPool).ToList();
         public List<Token> CombatPool { get; private set; }
         public List<Token> SpentPool { get; private set; }
 
