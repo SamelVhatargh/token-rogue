@@ -24,8 +24,7 @@ namespace Battle.Tokens
         
         public void Flip()
         {
-            ActiveSide = InactiveSide;
-            InactiveSide = ActiveSide;
+            (ActiveSide, InactiveSide) = (InactiveSide, ActiveSide);
             SideChanged?.Invoke();
         }
         

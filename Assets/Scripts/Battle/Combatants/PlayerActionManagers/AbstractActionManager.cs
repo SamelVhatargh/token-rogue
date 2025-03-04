@@ -6,14 +6,14 @@ using UnityEngine;
 
 namespace Battle.Combatants.PlayerActionManagers
 {
-    public abstract class AbstractActionManager : MonoBehaviour, IActionManager
+    public abstract class AbstractActionManager : IActionManager
     {
         public event Action<ICombatAction> OnActionReady;
 
         protected Selection _tokenSelection;
         protected Stats _attacker;
         protected Stats _defender;
-        private ActionHelperController _actionHelper;
+        protected ActionHelperController _actionHelper;
         protected SelectionManager _selectionManager;
 
         public virtual void Init(Selection tokenSelection, Stats attacker, Stats defender, ActionHelperController actionHelper,
@@ -49,7 +49,7 @@ namespace Battle.Combatants.PlayerActionManagers
 
         protected abstract void HandleConfirm();
 
-        public void Clear()
+        public virtual void Clear()
         {
             _actionHelper.OnConfirmClicked -= ActionHelper_OnConfirmClicked;
             _tokenSelection.OnSelectionChanged -= TokenSelection_OnSelectionChanged;
@@ -62,19 +62,6 @@ namespace Battle.Combatants.PlayerActionManagers
         }
 
         public abstract Tuple<Selection, Selection> getSelections();
-        
-        protected void OnDisable()
-        {
-            if (_actionHelper != null)
-            {
-                _actionHelper.OnConfirmClicked -= ActionHelper_OnConfirmClicked;
-            }
-
-            if (_tokenSelection != null)
-            {
-                _tokenSelection.OnSelectionChanged -= TokenSelection_OnSelectionChanged;
-            }
-        }
         
         protected void SetMessage(string message)
         {

@@ -11,12 +11,16 @@ namespace Battle.Tokens.Selections
         private readonly Symbol _validSymbols;
         private readonly bool _allowSpentTokens;
         private readonly List<Token> _selectedTokens;
+        private List<Token> _forbiddenTokens;
+        private int _limit;
 
         public Selection(Symbol validSymbols, bool allowSpentTokens = false)
         {
             _validSymbols = validSymbols;
             _allowSpentTokens = allowSpentTokens;
             _selectedTokens = new List<Token>();
+            _forbiddenTokens = new List<Token>();
+            _limit = 0;
         }
 
         public List<Token> GetSelectedTokens()
@@ -52,6 +56,16 @@ namespace Battle.Tokens.Selections
             {
                 return false;
             }
+            
+            if (_forbiddenTokens.Contains(token))
+            {
+                return false;
+            }
+
+            if (_limit > 0 && _selectedTokens.Count >= _limit)
+            {
+                return false;
+            }
 
             return (_validSymbols & token.ActiveSide.Symbol) != 0;
         }
@@ -70,6 +84,16 @@ namespace Battle.Tokens.Selections
         public bool IsEmpty()
         {
             return GetSelectedTokens().Count == 0;
+        }
+
+        public void ForbidSpecificTokens(List<Token> tokens)
+        {
+            _forbiddenTokens = tokens;
+        }
+        
+        public void SetLimit(int limit)
+        {
+            _limit = limit;
         }
     }
 }

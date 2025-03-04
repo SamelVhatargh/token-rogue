@@ -7,7 +7,7 @@ using Ui;
 
 namespace Battle.Combatants.PlayerActionManagers
 {
-    public class AttackActionManager : AbstractActionManager, IActionManager
+    public class AttackActionManager : AbstractActionManager
     {
         public override void Init(Selection tokenSelection, Stats attacker, Stats defender, ActionHelperController actionHelper, SelectionManager selectionManager)
         {

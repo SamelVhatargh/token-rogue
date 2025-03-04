@@ -17,8 +17,6 @@ namespace Battle.Combatants
         [SerializeField] private SelectionManager selectionManager;
         [SerializeField] private ActionHelperController actionHelper;
 
-        [SerializeField] private AttackActionManager attackActionManager;
-
         public event Action<ICombatAction> OnActionTaken;
         public Stats Stats { get; private set; }
         public CombatantType Type => CombatantType.Player;
@@ -34,7 +32,6 @@ namespace Battle.Combatants
 
         private void OnEnable()
         {
-            // tokenPoolView.OnTokenClicked += TokenPoolView_OnTokenClicked;
             selectionManager.OnTokenToggled += SelectionManager_OnTokenToggled;
             actionHelper.OnCancelClicked += ActionHelper_OnCancelClicked;
         }
@@ -72,8 +69,16 @@ namespace Battle.Combatants
                 switch (token.ActiveSide.Symbol)
                 {
                     case Symbol.Attack:
-                        _currentActionManager = attackActionManager;
+                        _currentActionManager = new AttackActionManager();
                         SetCombatActionSelection();
+                        _playerSelection.ToggleToken(token);
+                        _currentActionManager.Init(_playerSelection, Stats, _opponent.Stats, actionHelper, selectionManager);
+                        break;
+                    case Symbol.Agility:
+                        _currentActionManager = new AgilityActionManager();
+                        var selections = _currentActionManager.getSelections();
+                        _playerSelection = selections.Item1;
+                        _enemySelection = selections.Item2;
                         _playerSelection.ToggleToken(token);
                         _currentActionManager.Init(_playerSelection, Stats, _opponent.Stats, actionHelper, selectionManager);
                         break;
@@ -81,7 +86,6 @@ namespace Battle.Combatants
                     case Symbol.Empty:
                     case Symbol.Defense:
                     case Symbol.Energy:
-                    case Symbol.Agility:
                     case Symbol.Everything:
                     default:
                         Debug.LogWarning($"Action manager for {token.ActiveSide.Symbol} not implemented yet.");
