@@ -30,12 +30,18 @@ namespace Battle.Combatants
         private Selection _enemySelection;
 
         private IActionManager _currentActionManager;
+        private Battle _battle;
 
         private void OnEnable()
         {
             // tokenPoolView.OnTokenClicked += TokenPoolView_OnTokenClicked;
             selectionManager.OnTokenToggled += SelectionManager_OnTokenToggled;
             actionHelper.OnCancelClicked += ActionHelper_OnCancelClicked;
+        }
+
+        private void Battle_OnRoundStarted(int roundCount, ICombatant firstCombatant)
+        {
+            ResetActionManager();
         }
 
         private void ActionHelper_OnCancelClicked()
@@ -95,33 +101,9 @@ namespace Battle.Combatants
 
         private void CurrentActionManager_OnActionReady(ICombatAction action)
         {
-            ResetActionManager();
             _isPlayerTurn = false;
             OnActionTaken?.Invoke(action);
-        }
-
-        private void TokenPoolView_OnTokenClicked(Token token)
-        {
-            if (!_isPlayerTurn)
-            {
-                return;
-            }
-            
-            if (Stats.Tokens.IsSpent(token))
-            {
-                return;
-            }
-
-            var tokenSide = token.ActiveSide;
-            if (tokenSide.Symbol != Symbol.Attack)
-            {
-                return;
-            }
-
-            _isPlayerTurn = false;
-            OnActionTaken?.Invoke(
-                new AttackAction(Stats, _opponent.Stats, tokenSide.Value, new List<Token> { token })
-            );
+            ResetActionManager();
         }
 
         public void SetStats(Stats stats)
@@ -133,6 +115,12 @@ namespace Battle.Combatants
         public void SetOpponent(ICombatant opponent)
         {
             _opponent = opponent;
+        }
+        
+        public void setBattle(Battle battle)
+        {
+            _battle = battle;
+            _battle.OnRoundStarted += Battle_OnRoundStarted;
         }
 
         public void DoCombatAction()

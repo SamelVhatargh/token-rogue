@@ -7,6 +7,7 @@ namespace Battle.Tokens
     {
         private readonly Side _sideA;
         private readonly Side _sideB;
+        public bool IsSpent { get; private set; }
         
         public Side ActiveSide { get; private set; }
         public Side InactiveSide { get; private set; }
@@ -30,6 +31,7 @@ namespace Battle.Tokens
         
         public void Cast()
         {
+            IsSpent = false;
             if (Random.Range(0, 2) == 0)
             {
                 ActiveSide = _sideA;
@@ -41,6 +43,11 @@ namespace Battle.Tokens
                 InactiveSide = _sideA;
             }
             SideChanged?.Invoke();
+        }
+        
+        public void Spend()
+        {
+            IsSpent = true;
         }
 
         public override string ToString()

@@ -18,8 +18,7 @@ namespace Battle.Tokens
         {
             _tokens = tokens;
             Render();
-            _tokens.OnCombatPoolUpdated += Render;
-            _tokens.OnSpentPoolUpdated += Render;
+            _tokens.OnPoolUpdated += Render;
         }
 
         private void Render()

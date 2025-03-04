@@ -6,44 +6,31 @@ namespace Battle.Tokens
 {
     public class TokenPool
     {
-        public List<Token> All => CombatPool.Concat(SpentPool).ToList();
-        public List<Token> CombatPool { get; private set; }
-        public List<Token> SpentPool { get; private set; }
+        public List<Token> All { get; }
+        public List<Token> CombatPool => All.Where(token => !token.IsSpent).ToList();
+        public List<Token> SpentPool => All.Where(token => token.IsSpent).ToList();
 
-        public event Action OnSpentPoolUpdated;
-        public event Action OnCombatPoolUpdated;
+        public event Action OnPoolUpdated;
         
         public TokenPool(List<Token> tokens)
         {
-            CombatPool = tokens;
-            SpentPool = new List<Token>();
+            All = tokens;
         }
 
         public void Cast()
         {
-            CombatPool.AddRange(SpentPool);
-            SpentPool.Clear();
-        
-            OnCombatPoolUpdated?.Invoke();
-            OnSpentPoolUpdated?.Invoke();
             All.ForEach(token => token.Cast());
+            OnPoolUpdated?.Invoke();
         }
 
         public void Spend(List<Token> spentTokens)
         {
             foreach (var token in spentTokens.Where(token => CombatPool.Contains(token)))
             {
-                CombatPool.Remove(token);
-                SpentPool.Add(token);
+                token.Spend();
             }
             
-            OnCombatPoolUpdated?.Invoke();
-            OnSpentPoolUpdated?.Invoke();
-        }
-
-        public bool IsSpent(Token token)
-        {
-            return SpentPool.Contains(token);
+            OnPoolUpdated?.Invoke();
         }
         
         public int GetInitiative()

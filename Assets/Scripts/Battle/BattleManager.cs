@@ -43,8 +43,8 @@ namespace Battle
             player.SetDefaultSelection();
             _battle = new Battle(player, ai);
             battleLogController.SetBattle(_battle);
+            player.setBattle(_battle);
             _battle.Start();
-            player.ResetActionManager();
         }
     }
 }

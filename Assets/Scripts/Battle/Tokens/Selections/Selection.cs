@@ -7,13 +7,15 @@ namespace Battle.Tokens.Selections
     public class Selection
     {
         public event Action OnSelectionChanged;
-        
+
         private readonly Symbol _validSymbols;
+        private readonly bool _allowSpentTokens;
         private readonly List<Token> _selectedTokens;
 
-        public Selection(Symbol validSymbols)
+        public Selection(Symbol validSymbols, bool allowSpentTokens = false)
         {
             _validSymbols = validSymbols;
+            _allowSpentTokens = allowSpentTokens;
             _selectedTokens = new List<Token>();
         }
 
@@ -24,7 +26,7 @@ namespace Battle.Tokens.Selections
 
         public List<Token> GetSelectableTokens(List<Token> tokens)
         {
-            return tokens.Where(token => (_validSymbols & token.ActiveSide.Symbol) != 0).ToList();
+            return tokens.Where(CanTokenBeAdded).ToList();
         }
 
         public bool ToggleToken(Token token)
@@ -34,7 +36,7 @@ namespace Battle.Tokens.Selections
 
         private bool AddToken(Token token)
         {
-            if ((_validSymbols & token.ActiveSide.Symbol) == 0)
+            if (!CanTokenBeAdded(token))
             {
                 return false;
             }
@@ -44,6 +46,16 @@ namespace Battle.Tokens.Selections
             return true;
         }
 
+        private bool CanTokenBeAdded(Token token)
+        {
+            if (!_allowSpentTokens && token.IsSpent)
+            {
+                return false;
+            }
+
+            return (_validSymbols & token.ActiveSide.Symbol) != 0;
+        }
+
         private bool RemoveToken(Token token)
         {
             var result = _selectedTokens.Remove(token);
@@ -51,9 +63,10 @@ namespace Battle.Tokens.Selections
             {
                 OnSelectionChanged?.Invoke();
             }
+
             return result;
         }
-        
+
         public bool IsEmpty()
         {
             return GetSelectedTokens().Count == 0;
