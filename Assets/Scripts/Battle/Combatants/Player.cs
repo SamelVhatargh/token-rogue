@@ -52,12 +52,14 @@ namespace Battle.Combatants
             {
                 return;
             }
-
-            if (Stats.Tokens.CombatPool.Count(token => token.ActiveSide.Symbol == Symbol.Attack) != 0)
+        
+            
+            if (Stats.Tokens.CombatPool.Count(token => token.ActiveSide.Symbol == Symbol.Attack) != 0 ||
+                Stats.Tokens.CombatPool.Count(token => token.ActiveSide.Symbol == Symbol.Agility) != 0)
             {
                 return;
             }
-
+        
             _isPlayerTurn = false;
             OnActionTaken?.Invoke(new SkipAction(Stats.Name));
         }
