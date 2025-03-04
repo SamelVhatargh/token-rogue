@@ -75,7 +75,7 @@ namespace Battle.Combatants
                         _currentActionManager = attackActionManager;
                         SetCombatActionSelection();
                         _playerSelection.ToggleToken(token);
-                        _currentActionManager.Init(_playerSelection, Stats, _opponent.Stats);
+                        _currentActionManager.Init(_playerSelection, Stats, _opponent.Stats, actionHelper, selectionManager);
                         break;
                     case Symbol.None:
                     case Symbol.Empty:
@@ -135,6 +135,7 @@ namespace Battle.Combatants
             UpdateSelectionManager();
         }
         
+        [Obsolete]
         private void SetCombatActionSelection()
         {
             _playerSelection = new Selection(Symbol.Attack);

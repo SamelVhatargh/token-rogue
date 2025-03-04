@@ -4,77 +4,43 @@ using Battle.CombatActions;
 using Battle.Tokens;
 using Battle.Tokens.Selections;
 using Ui;
-using UnityEngine;
 
 namespace Battle.Combatants.PlayerActionManagers
 {
-    public class AttackActionManager : MonoBehaviour, IActionManager
+    public class AttackActionManager : AbstractActionManager, IActionManager
     {
-        [SerializeField] private ActionHelperController actionHelper;
-        
-        public event Action<ICombatAction> OnActionReady;
-        
-        private Selection _tokenSelection;
-        private Stats _attacker;
-        private Stats _defender;
-        
-        public void Init(Selection tokenSelection, Stats attacker, Stats defender)
+        public override void Init(Selection tokenSelection, Stats attacker, Stats defender, ActionHelperController actionHelper, SelectionManager selectionManager)
         {
-            _tokenSelection = tokenSelection;
-            _attacker = attacker;
-            _defender = defender;
-            actionHelper.SetMessage("Add more ⚔️ tokens or press confirm to attack.");
-            _tokenSelection.OnSelectionChanged += TokenSelection_OnSelectionChanged; 
-
-            actionHelper.EnableConfirmButton();
-            actionHelper.EnableCancelButton();
-            actionHelper.OnConfirmClicked += ActionHelper_OnConfirmClicked;
+            base.Init(tokenSelection, attacker, defender, actionHelper, selectionManager);
+            SetMessage("Add more ⚔️ tokens or press confirm to attack.");
         }
 
-        public void Clear()
+        public override Tuple<Selection, Selection> getSelections()
         {
-            actionHelper.OnConfirmClicked -= ActionHelper_OnConfirmClicked;
-            _tokenSelection.OnSelectionChanged -= TokenSelection_OnSelectionChanged;
-            
-            _tokenSelection = null;
-            _attacker = null;
-            _defender = null;
+            return new Tuple<Selection, Selection>(
+                new Selection(Symbol.Attack),
+                new Selection(Symbol.None)
+            );
         }
 
-        private void TokenSelection_OnSelectionChanged()
+        protected override void HandleSelectionChange()
         {
             if (_attacker.Tokens.CombatPool.Count(token => token.ActiveSide.Symbol == Symbol.Attack)
                 == _tokenSelection.GetSelectedTokens().Count)
             {
-                actionHelper.SetMessage("Press confirm to attack.");
+                SetMessage("Press confirm to attack.");
                 return;
             }
-            actionHelper.SetMessage("Add more ⚔️ tokens or press confirm to attack.");
+
+            SetMessage("Add more ⚔️ tokens or press confirm to attack.");
         }
 
-        private void ActionHelper_OnConfirmClicked()
+        protected override void HandleConfirm()
         {
-            actionHelper.OnConfirmClicked -= ActionHelper_OnConfirmClicked;
-            _tokenSelection.OnSelectionChanged -= TokenSelection_OnSelectionChanged; 
-
             var tokens = _tokenSelection.GetSelectedTokens();
             var damage = tokens.Sum(token => token.ActiveSide.Value);
-            
             var action = new AttackAction(_attacker, _defender, damage, tokens);
-            OnActionReady?.Invoke(action);
-        }
-
-        private void OnDisable()
-        {
-            if (actionHelper != null)
-            {
-                actionHelper.OnConfirmClicked -= ActionHelper_OnConfirmClicked;
-            }
-        
-            if (_tokenSelection != null)
-            {
-                _tokenSelection.OnSelectionChanged -= TokenSelection_OnSelectionChanged;
-            }
+            InvokeActionReady(action);
         }
     }
 }
